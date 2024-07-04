@@ -1,5 +1,5 @@
 rockspec_format = "3.0"
-package = "darkman.nvim"
+package = "system_theme.nvim"
 version = "scm-1"
 
 dependencies = {
@@ -8,5 +8,5 @@ dependencies = {
 }
 
 source = {
-    url = "git://github.com/cosmicboots/darkman.nvim.git"
+    url = "git://github.com/cosmicboots/system-theme.nvim.git"
 }
