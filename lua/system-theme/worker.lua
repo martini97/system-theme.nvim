@@ -72,7 +72,7 @@ function M.run(config)
 
                 -- Theme hook
                 if config.hooks ~= nil and config.hooks.dark ~= nil then
-                    config.hooks.dark()
+                    local _ = pcall(config.hooks.dark)
                 end
             elseif data == "2" then -- Light theme
                 if config.light_theme ~= nil then
@@ -83,7 +83,7 @@ function M.run(config)
 
                 -- Theme hook
                 if config.hooks ~= nil and config.hooks.light ~= nil then
-                    config.hooks.light()
+                    local _ = pcall(config.hooks.light)
                 end
             end
         end)
