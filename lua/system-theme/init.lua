@@ -4,10 +4,24 @@ local M = {}
 
 local kill_cmd = "SysThemeDbusKill"
 
-function M.setup()
+---@class ThemeHooks
+---@field light function
+---@field dark function
+
+---@class SystemThemeConfig
+---@field light_theme string?
+---@field dark_theme string?
+---@field hooks ThemeHooks?
+
+---Setup system theme
+---@param opts SystemThemeConfig?
+function M.setup(opts)
+    ---@type SystemThemeConfig
+    local config = opts or {}
+
     local _ = pcall(vim.api.nvim_command, kill_cmd)
 
-    local thread, close_fd = worker.run()
+    local thread, close_fd = worker.run(config)
 
     vim.api.nvim_create_user_command(kill_cmd, function()
         if thread ~= nil then

@@ -48,9 +48,10 @@ local function thread_func(new_pkg_path, cpath, pipe_fd, close_pipe)
 end
 
 ---Run the dbus worker thread
+---@param config SystemThemeConfig
 ---@return luv_thread_t? thread handle to the worker thread
 ---@return integer close_fd file descriptor used to stop the worker thread
-function M.run()
+function M.run(config)
     local fds = vim.uv.pipe()
     assert(fds ~= nil)
 
@@ -62,10 +63,28 @@ function M.run()
     pipe:read_start(function(err, data)
         assert(not err, err)
         vim.schedule(function()
-            if data == "1" then
-                vim.cmd("colorscheme sunburn")
-            elseif data == "2" then
-                vim.cmd("colorscheme base16-unikitty-light")
+            if data == "1" then -- Dark theme
+                if config.dark_theme ~= nil then
+                    vim.cmd("colorscheme " .. config.dark_theme)
+                else
+                    vim.cmd("colorscheme " .. (vim.g.dark_theme or "sorbet"))
+                end
+
+                -- Theme hook
+                if config.hooks ~= nil and config.hooks.dark ~= nil then
+                    config.hooks.dark()
+                end
+            elseif data == "2" then -- Light theme
+                if config.light_theme ~= nil then
+                    vim.cmd("colorscheme " .. config.light_theme)
+                else
+                    vim.cmd("colorscheme " .. (vim.g.light_theme or "morning"))
+                end
+
+                -- Theme hook
+                if config.hooks ~= nil and config.hooks.light ~= nil then
+                    config.hooks.light()
+                end
             end
         end)
     end)
