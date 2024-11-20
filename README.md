@@ -11,41 +11,53 @@ recommended to install using [lazy.nvim](https://github.com/folke/lazy.nvim)
 
 ```lua
 {
-    "cosmicboots/system-theme.nvim",
-    config = {
-        dark_theme = "sorbet",
-        light_theme = "morning",
+  "martini97/system-theme.nvim",
+  dev = true,
+  opts = {
+    themes = { dark = "default", light = "peachpuff" },
+    backgrounds = { dark = "light", light = "dark" },
+    hooks = {
+      dark = function() vim.print("its dark") end,
+      light = function() vim.print("its light") end,
     },
-}
+  },
+},
 ```
 
 ## Configuration
 
 The configuration passed into the setup function follows this format:
+
 ```lua
 {
-    light_theme = "your-light-theme", -- Light theme to use
-    dark_theme = "your-dark-theme", -- Dark theme to use
-    hooks = {
-        light = function()
-            -- This is run after the light theme is applied
-        end,
-        dark = function()
-            -- This is run after the dark theme is applied
-        end,
-    },
+  themes = {
+    dark = "your-dark-theme",   -- which dark theme to use (default: "default")
+    light = "your-light-theme", -- which light theme to use (default: "default")
+  },
+  backgrounds = {
+    dark = "dark",   -- which 'background' to set for dark theme (:h 'background') (default: "dark")
+    light = "light", -- which 'background' to set for light theme (:h 'background') (default: "light")
+  },
+  hooks = {
+    dark = function()  -- function to be execute when switching to dark theme, takes no argument (default: noop)
+      vim.print("its dark")
+    end,
+    light = function() -- function to be execute when switching to light theme, takes no argument (default: noop)
+      vim.print("its light")
+    end,
+  },
+  appearances = {
+    ["0"] = "light", -- which appearance to use for xdg color-scheme="0" (default: "light")
+    ["1"] = "dark",  -- which appearance to use for xdg color-scheme="1" (default: "dark")
+    ["2"] = "light", -- which appearance to use for xdg color-scheme="2" (default: "light")
+  },
 }
 ```
-
-All settings are optional. If `light_theme` or `dark_theme`
-aren't set, the global vim variables `g:light_theme` and
-`g:dark_theme` will be used, respectively.
 
 ## Usage
 
 This plugin will try to stay out of your way.
 
 If you need to terminate the thread processing system D-Bus messages, the
-`:SysThemeDbusKill` command is provided. This will prevent the plugin from
+`:SystemThemeDbusKill` command is provided. This will prevent the plugin from
 listening for system theme changes until Neovim is restarted.
-
